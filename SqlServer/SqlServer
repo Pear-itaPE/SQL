@@ -1,1 +1,290 @@
+1. SCRIPT para la creación de la base de datos
+
+-- CREACION DE BASE DE DATOS
+create database BD_LOGISTICA_PEAR;
+
+-- CREACION DE TABLAS
+
+use BD_LOGISTICA_PEAR
+go
+
+create table CONDUCTORES
+(
+	ID_CONDUCTOR int not null,
+	NOMBRES nvarchar(20) not null,
+	APELLIDOS nvarchar(100) not null,
+	DNI nvarchar(8) not null,
+	LICENCIA nvarchar(9) not null,
+	TIPO nvarchar(5) not null,
+	TELEFONO nvarchar(9) not null
+)
+go
+
+create table UNIDADES
+(
+	ID_UNIDAD int not null,
+	PLACA nvarchar(10) not null,
+	ID_CONDUCTOR int not null,
+	PESO_BRUTO float not null,
+	PESO_NETO float not null,
+	CARGA_UTIL float not null
+)
+go
+
+create table KM_RECORRIDOS
+(
+	ID_KILOMETROS int not null,
+	FECHA date,
+	KM_INICIAL float not null,
+	KM_FINAL float not null,
+	KM_RECORRIDO float not null,
+	TOTAL_UTILIDAD float not null,
+	ID_UNIDAD int not null
+)
+go
+
+create table INGRESOS
+(
+	ID_INGRESOS int not null,
+	FECHA date,
+	FLETE float not null,
+	FLETE_REPARTO float not null,
+	INGRESO_TOTAL float not null,
+)
+go
+
+create table COSTO
+(
+	ID_COSTO int not null,
+	CONSUMO_DIESEL float not null,
+	COSTO_SOLES	float not null,
+	VIATICOS float not null,
+	PEAJES float not null,
+	REPUESTOS float not null,
+	OTROS_GASTOS float not null,
+	COSTO_TOTAL float not null
+)
+go
+
+create table HOJA_DISTRIBUCION
+(
+	ID_HDISTRIBUCION int not null,
+	COD_DISTRIBUCION int not null,
+	FECHA date,
+	TIPO_REPARTO nvarchar(100) not null,
+	ID_UNIDAD int not null,
+	DESTINO_REPARTO nvarchar(100) not null,
+	U_OPERATIVA float not null,
+	ID_KILOMETROS int not null
+)
+go
+
+create table ENTREGAS
+(
+	ID_ENTREGA int not null,
+	ID_HDISTRIBUCION int not null,
+	FECHA date,
+	ID_UNIDAD int not null,
+	PESO_REQUERIDO float not null,
+	PESO_ENTREGADO float not null,
+	PESO_ENTREGADO_A_TIEMPO float not null,
+	ENTREGAS_EFECTUADAS int not null,
+	ENTREGAS_RECHAZADAS int not null,
+	NUMERO_OPERARIOS int not null,
+	ID_COSTO int not null,
+	ID_INGRESOS int not null
+)
+go
+
+
+-- LLAVES PRIMARIAS
+
+alter table CONDUCTORES
+add constraint pk_CONDUCTORES primary key
+(ID_CONDUCTOR)
+go
+
+alter table UNIDADES
+add constraint pk_UNIDADES primary key
+(ID_UNIDAD)
+go
+
+alter table KM_RECORRIDOS
+add constraint pk_RECORRIDOS primary key
+(ID_KILOMETROS)
+go
+
+alter table INGRESOS
+add constraint pk_INGRESOS primary key
+(ID_INGRESOS)
+go
+
+alter table COSTO
+add constraint pk_COSTO primary key
+(ID_COSTO)
+go
+
+alter table HOJA_DISTRIBUCION
+add constraint pk_DISTRIBUCION primary key
+(ID_HDISTRIBUCION)
+go
+
+alter table ENTREGAS
+add constraint pk_ENTREGAS primary key
+(ID_ENTREGA)
+go
+
+-- LLAVES FORANEAS
+
+alter table UNIDADES
+add constraint fk_UNIDADES_CONDUCTORES foreign key
+(ID_CONDUCTOR) references CONDUCTORES(ID_CONDUCTOR)
+
+alter table KM_RECORRIDOS
+add constraint fk_KM_UNIDADES foreign key
+(ID_UNIDAD) references UNIDADES(ID_UNIDAD)
+
+alter table HOJA_DISTRIBUCION
+add constraint fk_HOJA_UNIDADES foreign key
+(ID_UNIDAD) references UNIDADES(ID_UNIDAD)
+
+alter table HOJA_DISTRIBUCION
+add constraint fk_HOJA_KM foreign key
+(ID_KILOMETROS) references KM_RECORRIDOS(ID_KILOMETROS)
+
+alter table ENTREGAS
+add constraint fk_ENTREGAS_HOJA foreign key
+(ID_HDISTRIBUCION) references HOJA_DISTRIBUCION(ID_HDISTRIBUCION)
+
+alter table ENTREGAS
+add constraint fk_ENTREGAS_UNIDADES foreign key
+(ID_UNIDAD) references UNIDADES(ID_UNIDAD)
+
+alter table ENTREGAS
+add constraint fk_ENTREGAS_COSTO foreign key
+(ID_COSTO) references COSTO(ID_COSTO)
+
+alter table ENTREGAS
+add constraint fk_ENTREGAS_INGRESO foreign key
+(ID_INGRESOS) references INGRESOS(ID_INGRESOS)
+
+2. PREGUNTAS POSIBLES DE NEGOCIO (APLICACIÓN)
+
+A.¿Cuál es el km máximo recorrido de cada unidad ?
+B.¿Cuál es el km mínimo recorrido de cada unidad ?
+C.¿Cuál es el km promedio recorrido de cada unidad ?
+
+VISTA:
+
+select*from vw_ResumenKmRecorridosAVG
+
+DESARROLLO:
+
+Create view vw_ResumenKmRecorridosAVG
+as
+select
+	b.PLACA as KmAVG,
+	MAX (KM_RECORRIDO) as km_max,
+	MIN (KM_RECORRIDO) as km_min,
+	AVG (KM_RECORRIDO) as km_avg
+from HOJA_DISTRIBUCION as a
+inner join UNIDADES as b
+on a.ID_UNIDAD=b.ID_UNIDAD
+inner join KM_RECORRIDOS as c 
+on b.ID_UNIDAD=c.ID_UNIDAD
+group by b.PLACA
+
+
+A.¿Cuál es el total de utilidad operativa obtenida por cada unidad ?
+B.¿Cuál es el total de utilidad operativa según el tipo de reparto ?
+
+VISTA:
+
+select*from vw_UtilidadOperativa
+
+
+DESARROLLO:
+
+Create or alter view vw_UtilidadOperativa
+as
+with CTE_Uoperativa as
+(
+select
+c.  ID_UNIDAD as UND,
+	a.TIPO_REPARTO,
+	SUM(a.U_OPERATIVA ) as U_OPERATIVA
+	from
+	HOJA_DISTRIBUCION as a
+	inner join ENTREGAS as b
+	on a.ID_HDISTRIBUCION=b.ID_HDISTRIBUCION
+	inner join UNIDADES as c
+	on b.ID_UNIDAD=c.ID_UNIDAD
+	group by c.  ID_UNIDAD, a.TIPO_REPARTO
+)
+select
+UND,
+FUNDO,
+LOCAL,
+JAEN,
+OLMOS,
+TRUJILLO,
+PIURA,
+TOTTUS,
+RECOJO,
+TRASBORDO,
+ABASTECIMIENTO
+from CTE_Uoperativa
+pivot
+(
+sum (U_OPERATIVA)
+for TIPO_REPARTO
+in ( FUNDO,LOCAL,JAEN,OLMOS,TRUJILLO,PIURA,TOTTUS,RECOJO,TRASBORDO,ABASTECIMIENTO)
+) as pivot_table
+
+
+A. ¿Cuál es el total de utilidad operativa por mes de cada unidad?
+B.¿Cuál es la variación mensual de la utilidad operativa ?
+
+VISTA:
+
+select*from vw_variacionMensual
+DESARROLLO:
+
+create or alter view vw_variacionMensual as
+select
+*
+,
+LAG (TotalUoperativa) over (partition by PLACA order by mes) UtilidadPasada,
+(TotalUoperativa-LAG (TotalUoperativa) over (partition by PLACA order by mes))/
+lag( TotalUoperativa)over (partition by PLACA order by mes) as cambio_mes
+from 
+(
+select
+	B.PLACA,
+	sum(A.U_OPERATIVA)as TotalUoperativa,
+	MONTH (a.FECHA) as mes
+from 
+[dbo].[HOJA_DISTRIBUCION] as A
+inner join  [dbo].[UNIDADES]as B
+on A.ID_UNIDAD=B.ID_UNIDAD
+GROUP BY B.PLACA,MONTH (a.FECHA)
+) as X
+
+
+
+A. ¿Cuál es el costo total invertido por la empresa?
+
+VISTA:
+SELECT*FROM vw_CostoTotalInvertido
+
+
+DESARROLLO:
+Create view vw_CostoTotalInvertido
+as
+SELECT 
+ROUND(SUM(COSTO_TOTAL),2) AS [COSTO TOTAL INVERTIDO] 
+FROM [dbo].[COSTO]
+
+
+
 
