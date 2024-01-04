@@ -168,11 +168,35 @@ alter table ENTREGAS
 add constraint fk_ENTREGAS_INGRESO foreign key
 (ID_INGRESOS) references INGRESOS(ID_INGRESOS)
 
-2. PREGUNTAS POSIBLES DE NEGOCIO (APLICACIÓN)
+2. INGRESAR VALORES
 
-A.¿Cuál es el km máximo recorrido de cada unidad ?
-B.¿Cuál es el km mínimo recorrido de cada unidad ?
-C.¿Cuál es el km promedio recorrido de cada unidad ?
+insert into [dbo].[CONDUCTORES]
+values
+go
+insert into [dbo].[COSTO]
+values
+go
+insert into [dbo].[INGRESOS]
+values
+go
+insert into [dbo].[ENTREGAS]
+values
+go
+insert into [dbo].[HOJAS_DISTRIBUCION]
+values
+go
+insert into [dbo].[KM_RECORRIDOS]
+values
+go
+insert into [dbo].[UNIDADES]
+values
+
+
+3. PREGUNTAS POSIBLES DE NEGOCIO (APLICACIÓN)
+
+a) .¿Cuál es el km máximo recorrido de cada unidad ?
+b) .¿Cuál es el km mínimo recorrido de cada unidad ?
+c) .¿Cuál es el km promedio recorrido de cada unidad ?
 
 VISTA:
 
@@ -195,8 +219,8 @@ on b.ID_UNIDAD=c.ID_UNIDAD
 group by b.PLACA
 
 
-A.¿Cuál es el total de utilidad operativa obtenida por cada unidad ?
-B.¿Cuál es el total de utilidad operativa según el tipo de reparto ?
+d) .¿Cuál es el total de utilidad operativa obtenida por cada unidad ?
+e) .¿Cuál es el total de utilidad operativa según el tipo de reparto ?
 
 VISTA:
 
@@ -242,8 +266,8 @@ in ( FUNDO,LOCAL,JAEN,OLMOS,TRUJILLO,PIURA,TOTTUS,RECOJO,TRASBORDO,ABASTECIMIENT
 ) as pivot_table
 
 
-A. ¿Cuál es el total de utilidad operativa por mes de cada unidad?
-B.¿Cuál es la variación mensual de la utilidad operativa ?
+f) . ¿Cuál es el total de utilidad operativa por mes de cada unidad?
+g) .¿Cuál es la variación mensual de la utilidad operativa ?
 
 VISTA:
 
@@ -272,7 +296,7 @@ GROUP BY B.PLACA,MONTH (a.FECHA)
 
 
 
-A. ¿Cuál es el costo total invertido por la empresa?
+h) . ¿Cuál es el costo total invertido por la empresa?
 
 VISTA:
 SELECT*FROM vw_CostoTotalInvertido
