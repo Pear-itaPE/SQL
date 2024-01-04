@@ -23,4 +23,16 @@ la información sobre las unidades que realizan las entregas, entre otros datos 
   * Hoja_Distribución.
   * Km_recorridos.
   * Unidades.
+    
+## PREGUNTAS DE NEGOCIO
+
+A. ¿Cuál es el km máximo recorrido de cada unidad ?
+B. ¿Cuál es el km mínimo recorrido de cada unidad ?
+C. ¿Cuál es el km promedio recorrido de cada unidad ?
+D. ¿Cuál es el total de utilidad operativa obtenida por cada unidad ?
+E. ¿Cuál es el total de utilidad operativa según el tipo de reparto ?
+F. ¿Cuál es el total de utilidad operativa por mes de cada unidad? 
+G. ¿Cuál es la variación mensual de la utilidad operativa ?
+H. ¿Cuál es el costo total invertido por la empresa?
+
 
