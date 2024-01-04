@@ -44,9 +44,9 @@ la información sobre las unidades que realizan las entregas, entre otros datos 
 * F. ¿Cuál es el total de utilidad operativa por mes de cada unidad? 
 
 
-*G. ¿Cuál es la variación mensual de la utilidad operativa ?
+* G. ¿Cuál es la variación mensual de la utilidad operativa ?
 
 
-*H. ¿Cuál es el costo total invertido por la empresa?
+* H. ¿Cuál es el costo total invertido por la empresa?
 
 
