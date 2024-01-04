@@ -1,4 +1,4 @@
-##ENTORNO
+## ENTORNO
 Entorno: SQL Server Management Studio 19 (SSMS 19) 
 
 El presente proyecto se enfocará en el análisis de las entregas de la empresa GRAU LOGISTICA EXPRESS S.A, que nos permitirá entender cuál 
