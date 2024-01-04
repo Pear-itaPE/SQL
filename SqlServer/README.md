@@ -1,5 +1,5 @@
 ## ENTORNO
-Entorno: SQL Server Management Studio 19 (SSMS 19) 
+Entorno: SQL Server Management Studio 19 (SSMS 19) ![ SQL ] ( https://img.shields.io/badge/-MySQL-%23F7DF1C?style=flat-square&logo=MySQL&logoColor=ffffff&labelColor=%ffffff&color=%23FFCE5A )
 
 ## JUSTIFICACIÓN DEL MODELO
 El presente proyecto se enfocará en el análisis de las entregas de la empresa PEAR S.A, que nos permitirá entender cuál 
