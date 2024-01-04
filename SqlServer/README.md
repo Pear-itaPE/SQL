@@ -14,6 +14,8 @@ de reparto.
 ## DESCRIPCIÒN DEL MODELO
 El modelo seleccionado es una base de datos que nos muestra con detalle como es el movimiento de las entregas de la empresa 
 “PEAR SA” dedicada al transporte y distribución de carga y paquetería. Se muestran además los costos e ingresos por las entregas, así como
-la información sobre las unidades que realizan las entregas, entre otros datos importantes que nos permitirán entender cómo es el funcionamiento
-de esta organización. El modelo consta 7 tablas, cada una con sus respectivas columnas.
+la información sobre las unidades que realizan las entregas, entre otros datos importantes que nos permitirán entender cómo es el funcionamiento de esta organización. El modelo consta 7 tablas, cada una con sus respectivas columnas.
+
+  * Brand awareness
+  * Market share
 
