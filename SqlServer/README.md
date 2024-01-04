@@ -16,6 +16,11 @@ El modelo seleccionado es una base de datos que nos muestra con detalle como es 
 “PEAR SA” dedicada al transporte y distribución de carga y paquetería. Se muestran además los costos e ingresos por las entregas, así como
 la información sobre las unidades que realizan las entregas, entre otros datos importantes que nos permitirán entender cómo es el funcionamiento de esta organización. El modelo consta 7 tablas, cada una con sus respectivas columnas.
 
-  * Brand awareness
-  * Market share
+  * Conductores.
+  * Costos.
+  * Ingresos.
+  * Entregas.
+  * Hoja_Distribución.
+  * Km_recorridos.
+  * Unidades.
 
